@@ -2,7 +2,7 @@
 
 # zxspec48-app
 
-The *zxspec48-app* is an empty application template for ZX Spectrum 48K.
+The *zxspec48-app* is an empty *SDCC* application template for ZX Spectrum 48K.
 
 Add your `.c` and `.s` source files into the `src` directory and run 
 
