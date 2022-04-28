@@ -20,37 +20,37 @@ vpath %.s $(SDIRS)
 vpath %.h $(SDIRS)
 
 # Source files and the target.
-APP 		=	app
-ADDR		=	0x8000
-CRT0		=	crt0
-C_SRCS		=	$(wildcard */*.c)
-S_SRCS		=	$(filter-out $(SDIRS)/$(CRT0).s, $(wildcard */*.s))
-OBJS		=	$(addprefix $(BUILD_DIR)/, \
-					$(notdir \
-						$(patsubst %.c,%.rel,$(C_SRCS)) \
-						$(patsubst %.s,%.rel,$(S_SRCS)) \
-					) \
-				)
+APP         =   app
+ADDR        =   0x8000
+CRT0        =   crt0
+C_SRCS      =   $(wildcard */*.c)
+S_SRCS      =   $(filter-out $(SDIRS)/$(CRT0).s, $(wildcard */*.s))
+OBJS        =   $(addprefix $(BUILD_DIR)/, \
+                    $(notdir \
+                        $(patsubst %.c,%.rel,$(C_SRCS)) \
+                        $(patsubst %.s,%.rel,$(S_SRCS)) \
+                    ) \
+                )
 
 # Tools.
-CC			=	sdcc
-CFLAGS		=	--std-c11 -mz80 --debug --nostdinc \
-				$(addprefix -I,$(INC_DIR))
-AS			=	sdasz80
-ASFLAGS		=	-xlos -g
-LD			=	sdcc
-LDFLAGS		=	-mz80 -Wl -y --code-loc $(ADDR) \
-				--no-std-crt0 --nostdlib --nostdinc \
-				$(addprefix -L,$(LIB_DIR)) \
-				-llibsdcc-z80 -p
-OBJCOPY		=	sdobjcopy
+CC          =   sdcc
+CFLAGS      =   --std-c11 -mz80 --debug --nostdinc \
+                $(addprefix -I,$(INC_DIR))
+AS          =   sdasz80
+ASFLAGS     =   -xlos -g
+LD          =   sdcc
+LDFLAGS     =   -mz80 -Wl -y --code-loc $(ADDR) \
+                --no-std-crt0 --nostdlib --nostdinc \
+                $(addprefix -L,$(LIB_DIR)) \
+                -llibsdcc-z80 -p
+OBJCOPY     =   sdobjcopy
 # Data segment fix (relink due to SDCC bug)
-L2         	=   sdldz80
+L2          =   sdldz80
 L2FLAGS     =   -nf
 L2FIX       =   sed '/-b _DATA = $(ADDR)/d'
 # File
-RMDIR		=	rm -f -r 
-MKDIR 		=	mkdir -p 
+RMDIR       =   rm -f -r 
+MKDIR       =   mkdir -p 
 
 # Rules.
 .PHONY: all
@@ -62,7 +62,6 @@ $(BUILD_DIR):
 	$(RMDIR) $(BUILD_DIR)
 	# And re-create!
 	$(MKDIR) $(BUILD_DIR)
-	echo $(S_SRCS)
 
 $(BUILD_DIR)/$(APP).bin: $(BUILD_DIR)/$(APP).ihx
 	$(OBJCOPY) -I ihex -O binary $(basename $@).ihx $(basename $@).bin
