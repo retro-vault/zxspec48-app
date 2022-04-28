@@ -9,12 +9,12 @@ K := $(foreach exec,$(REQUIRED),\
     $(if $(shell which $(exec)),,$(error "$(exec) not found. Please install or add to path.")))
 
 # Directories.
-BUILD_DIR	=	build
-INC_DIR		=	. include
-LIB_DIR		=	lib
+BUILD_DIR   =   build
+INC_DIR     =   . include
+LIB_DIR     =   lib
 
 # Virtual paths are all subfolders!
-SDIRS		=	src
+SDIRS       =   src
 vpath %.c $(SDIRS)
 vpath %.s $(SDIRS)
 vpath %.h $(SDIRS)
