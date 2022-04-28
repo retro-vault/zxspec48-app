@@ -10,7 +10,7 @@ K := $(foreach exec,$(REQUIRED),\
 
 # Directories.
 BUILD_DIR	=	build
-INC_DIR		= 	. include
+INC_DIR		=	. include
 LIB_DIR		=	lib
 
 # Virtual paths are all subfolders!
