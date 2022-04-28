@@ -12,7 +12,7 @@ make
 
 This will create the `app.bin` inside your `build` folder.
 
-Pass the `APP` and `ADDR` parameters to give your application the name and compile it to a different address. 
+Pass the `APP` and `ADDR` parameters to change the name of your application and compile it to a different address. 
 
 ~~~
 make APP=myapp ADDR=0x9000`
