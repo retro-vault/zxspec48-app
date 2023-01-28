@@ -27,4 +27,4 @@ make APP=myapp ADDR=0x9000`
 [license.url]:    https://github.com/tstih/nice/blob/master/LICENSE
 [license.badge]:  https://img.shields.io/badge/license-MIT-blue.svg
 
-[status.badge]:  https://img.shields.io/badge/status-stable-darkgreen.svg
+[status.badge]:  https://img.shields.io/badge/status-stable-dkgreen.svg
