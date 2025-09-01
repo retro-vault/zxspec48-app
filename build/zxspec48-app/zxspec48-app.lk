@@ -1,0 +1,13 @@
+-b_CODE=0x8000
+-b_DATA=0x9000
+-b_BSS=0x9800
+-i
+-m
+-j
+-o zxspec48-app.ihx
+crt0.rel
+cclear.rel
+cinit.rel
+cputc.rel
+cputs.rel
+main.rel

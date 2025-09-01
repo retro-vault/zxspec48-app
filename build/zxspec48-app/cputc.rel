@@ -1,0 +1,11 @@
+XL4
+H 1 areas 2 global symbols
+M cputc
+O -mz80 sdcccall(1)
+S .__.ABS. Def00000000
+A _CODE size A flags 0 addr 0
+S _cputc Def00000000
+T 00 00 00 00
+R 00 00 00 00
+T 00 00 00 00 FD E5 FD 21 3A 5C D7 FD E1 C9
+R 00 00 00 00

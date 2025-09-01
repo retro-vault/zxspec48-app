@@ -1,0 +1,11 @@
+XL4
+H 1 areas 2 global symbols
+M cclear
+O -mz80 sdcccall(1)
+S .__.ABS. Def00000000
+A _CODE size C flags 0 addr 0
+S _cclear Def00000000
+T 00 00 00 00
+R 00 00 00 00
+T 00 00 00 00 FD E5 FD 21 3A 5C CD AF 0D FD E1 C9
+R 00 00 00 00

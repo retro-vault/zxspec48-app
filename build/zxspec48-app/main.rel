@@ -1,0 +1,43 @@
+;!FILE ../build/zxspec48-app/main.asm
+XL4
+H 9 areas 11 global symbols
+M main
+O -mz80 sdcccall(1)
+S _cclear Ref00000000
+S _cputs Ref00000000
+S .__.ABS. Def00000000
+S _cinit Ref00000000
+A _CODE size 1F flags 0 addr 0
+S _main Def00000000
+S XG$main$0$0 Def00000009
+S A$main$62 Def00000003
+S A$main$74 Def00000009
+S A$main$66 Def00000006
+S A$main$58 Def00000000
+S C$main.c$11$1_0$3 Def00000006
+S C$main.c$17$1_0$3 Def00000009
+S Fmain$__str_0$0_0$0 Def0000000C
+S C$main.c$6$0_0$3 Def00000000
+S C$main.c$7$1_0$3 Def00000000
+S C$main.c$9$1_0$3 Def00000003
+S G$main$0$0 Def00000000
+A _DATA size 0 flags 0 addr 0
+A _INITIALIZED size 0 flags 0 addr 0
+A _DABS size 0 flags 8 addr 0
+A _HOME size 0 flags 0 addr 0
+A _GSINIT size 0 flags 0 addr 0
+A _GSFINAL size 0 flags 0 addr 0
+A _INITIALIZER size 0 flags 0 addr 0
+A _CABS size 0 flags 8 addr 0
+T 00 00 00 00
+R 00 00 00 00
+T 00 00 00 00 CD 00 00 CD 00 00 21 0C 00 C3
+R 00 00 00 00 02 05 03 00 02 08 00 00 00 0B 00 00
+T 0A 00 00 00 00 00
+R 00 00 00 00 02 04 01 00
+T 0C 00 00 00
+R 00 00 00 00
+T 0C 00 00 00 68 65 6C 6C 6F 20 77 6F 72 6C 64 0A
+R 00 00 00 00
+T 18 00 00 00 61 67 61 69 6E 21 00
+R 00 00 00 00

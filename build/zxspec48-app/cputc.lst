@@ -1,0 +1,21 @@
+                                      1         ;; cputc: output character via ZX ROM RST 0x10 (CH-OUT)
+                                      2         ;;
+                                      3         ;; gpl-2.0-or-later (see: LICENSE)
+                                      4         ;; copyright (c) 2025 tomaz stih
+                                      5 
+                                      6         .module cputc
+                                      7         .optsdcc -mz80 sdcccall(1)
+                                      8 
+                                      9         .area   _CODE
+                                     10 
+                                     11         .globl  _cputc
+                                     12 
+                                     13         ;; cputc(char ch)
+                                     14         ;; inputs: (stack) ch (promoted to int; low byte is the character)
+                                     15         ;; clobbers: af, (temporarily IY; preserved on return)
+    00000000                         16 _cputc:
+    00000000 FD E5            [15]   17         push    iy                      ; preserve IY: ROM uses sysvars at 0x5C3A
+    00000002 FD 21 3A 5C      [14]   18         ld      iy,#0x5c3a
+    00000006 D7               [11]   19         rst     0x10                    ; CH-OUT
+    00000007 FD E1            [14]   20         pop     iy
+    00000009 C9               [10]   21         ret

@@ -1,0 +1,37 @@
+                                      1         ;; print zero-terminated string via zx rom ch-out
+                                      2         ;; maps '\n' to carriage return (0x0d)
+                                      3         ;;
+                                      4         ;; gpl-2.0-or-later (see: LICENSE)
+                                      5         ;; copyright (c) 2025 tomaz stih
+                                      6 
+                                      7         .module cputs                             ; module name
+                                      8         .optsdcc -mz80 sdcccall(1)
+                                      9         .area   _CODE                             ; code segment
+                                     10 
+                                     11         .globl  _cputs                            ; export symbols
+                                     12         .globl  _cputc
+                                     13 
+                                     14         ;; _cputs
+                                     15         ;; inputs:  hl = s
+                                     16         ;; outputs: none
+                                     17         ;; clobbers: a, f, iy
+    00000000                         18 _cputs::
+    00000000                         19 .next:
+    00000000 7E               [ 7]   20         ld      a, (hl)                           ; load next char
+    00000001 B7               [ 4]   21         or      a
+    00000002 28 12            [12]   22         jr      z, .done                          ; stop on nul
+    00000004 FE 0A            [ 7]   23         cp      #0x0a                             ; newline?
+    00000006 20 02            [12]   24         jr      nz, .print
+    00000008 3E 0D            [ 7]   25         ld      a, #0x0d                          ; map to cr
+                                     26 
+    0000000A                         27 .print:
+    0000000A FD E5            [15]   28         push    iy                                ; preserve iy (rom sysvars)
+    0000000C FD 21 3A 5C      [14]   29         ld      iy, #0x5c3a                       ; system variables base
+    00000010 D7               [11]   30         rst     0x10                              ; ch-out: prints a
+    00000011 FD E1            [14]   31         pop     iy
+                                     32 
+    00000013 23               [ 6]   33         inc     hl
+    00000014 18 EA            [12]   34         jr      .next
+                                     35 
+    00000016                         36 .done:
+    00000016 C9               [10]   37         ret

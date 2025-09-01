@@ -1,0 +1,91 @@
+ASxxxx Linker V03.00/V05.40 + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+.  .ABS.               00000000    00000000 =           0. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000000  .__.ABS.  |    00000000  l__CABS   |    00000000  l__DABS  
+     00000000  l__DATA   |    00000000  l__HEAP   |    00000000  l__HOME  
+     00000000  l__INITFI |    00000000  l__INITIA |    00000000  l__INITIA
+     00000000  s__CABS   |    00000000  s__DABS   |    00000001  l__GSFINA
+     0000000F  l__GSINIT |    00000084  l__CODE   |    00000202  l__BSS   
+     00008000  s__CODE   |    00008084  s__GSINIT |    00008093  s__GSFINA
+     00008094  s__HOME   |    00008094  s__INITFI |    00008094  s__INITIA
+     00008094  s__INITIA |    00009000  s__DATA   |    00009800  s__BSS   
+     00009A02  s__HEAP  
+ASxxxx Linker V03.00/V05.40 + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_CODE                  00008000    00000084 =         132. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     0000802E  _cclear   |    0000803A  _cinit    |    00008044  _cputc   
+     0000804E  _cputs    |    00008065  A$main$58 |    00008065  C$main.c$
+     00008065  C$main.c$ |    00008065  G$main$0$ |    00008065  _main    
+     00008068  A$main$62 |    00008068  C$main.c$ |    0000806B  A$main$66
+     0000806B  C$main.c$ |    0000806E  A$main$74 |    0000806E  C$main.c$
+     0000806E  XG$main$0 |    00008071  Fmain$__s
+ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_GSINIT                00008084    0000000F =          15. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_GSFINAL               00008093    00000001 =           1. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_BSS                   00009800    00000202 =         514. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00009A02  __stack  
+ASxxxx Linker V03.00/V05.40 + sdld,  page 6.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEAP                  00009A02    00000000 =           0. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00009A02  __heap   
+ASxxxx Linker V03.00/V05.40 + sdld,  page 7.
+
+Files Linked                              [ module(s) ]
+
+crt0.rel                                  [ crt0 ]
+cclear.rel                                [ cclear ]
+cinit.rel                                 [ cinit ]
+cputc.rel                                 [ cputc ]
+cputs.rel                                 [ cputs ]
+main.rel                                  [ main ]
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 8.
+
+User Base Address Definitions
+
+_CODE=0x8000
+_DATA=0x9000
+_BSS=0x9800
+
+
