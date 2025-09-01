@@ -115,9 +115,7 @@ $(BUILD_DIR)/%.rel: $(SRC_DIR)/%.c
 clean:
 	@echo "[clean] removing $(BUILD_DIR)"
 	@rm -rf "$(BUILD_DIR)"
+	@echo "[clean] removing $(BIN_DIR)"
+	@rm -rf "$(BIN_DIR)"
 
-distclean: clean
-	@echo "[clean] removing $(BIN_DIR)/$(TARGET).*"
-	@rm -f "$(BIN_DIR)/$(TARGET).tap" "$(BIN_DIR)/$(TARGET).tzx" 2>/dev/null || true
-
-.PHONY: all clean distclean
+.PHONY: all clean
