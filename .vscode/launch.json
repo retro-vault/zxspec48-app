@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ZX Spectrum: Build & Run in Fuse",
+      "type": "cppdbg",
+      "request": "launch",
+
+      "preLaunchTask": "Build (Docker)",
+
+      "program": "/usr/bin/fuse",
+      "args": ["${workspaceFolder}/bin/zxspec48-app.tap"],
+
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+
+      "environment": [
+        { "name": "DISPLAY", "value": "${env:DISPLAY}" }
+      ]
+    }
+  ]
+}

@@ -1,3 +1,4 @@
 void main() {
-    /* Insert your code here. */
+    unsigned char *vmem=(unsigned char*)0x4000;
+    *vmem=0xff;
 }
