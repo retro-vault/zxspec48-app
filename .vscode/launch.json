@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ZX Spectrum (Fuse in Docker)",
+      "type": "cppdbg",
+      "request": "launch",
+      "preLaunchTask": "Build ZX Spectrum app",
+
+      "program": "/usr/local/bin/docker",
+      "args": [
+        "run", "--rm",
+        "-e", "DISPLAY=${env:DISPLAY}",
+        "-v", "/tmp/.X11-unix:/tmp/.X11-unix",
+        "-v", "${workspaceFolder}:/work",
+        "-w", "/work",
+        "wischner/sdcc-z80-zx-spectrum:latest",
+        "fuse", "/work/bin/zxspec48-app.tap"
+      ],
+
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false
+    }
+  ]
+}

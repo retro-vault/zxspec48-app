@@ -1,86 +1,38 @@
-# We only allow compilation on linux!
-ifneq ($(shell uname), Linux)
-$(error OS must be Linux!)
-endif
+# ---------- project ----------
+TARGET ?= zxspec48-app
 
-# Check if all required tools are on the system.
-REQUIRED = sdcc sdasz80 sdldz80 sdobjcopy sed
-K := $(foreach exec,$(REQUIRED),\
-    $(if $(shell which $(exec)),,$(error "$(exec) not found. Please install or add to path.")))
+# ---------- docker ----------
+# Prebuilt toolchain image (no local build step needed)
+DOCKER_IMAGE ?= wischner/sdcc-z80-zx-spectrum:latest
 
-# Directories.
-BUILD_DIR   =   build
-INC_DIR     =   . include
-LIB_DIR     =   lib
+# Mount the repo read/write and run make in /work
+# Ensure SDCC is on PATH (image uses /opt/sdcc/bin)
+WORKDIR      := $(PWD)
+DOCKER_RUN   = docker run --rm -v "$(WORKDIR):/work" -w /work \
+               $(DOCKER_IMAGE) env PATH=/opt/sdcc/bin:$$PATH
 
-# Virtual paths are all subfolders!
-SDIRS       =   src
-vpath %.c $(SDIRS)
-vpath %.s $(SDIRS)
-vpath %.h $(SDIRS)
+# ---------- targets ----------
+# Default: build inside docker (artifacts -> ./build & ./bin via src/Makefile)
+all: $(TARGET)
 
-# Source files and the target.
-APP         =   app
-ADDR        =   0x8000
-CRT0        =   crt0
-C_SRCS      =   $(wildcard */*.c)
-S_SRCS      =   $(filter-out $(SDIRS)/$(CRT0).s, $(wildcard */*.s))
-OBJS        =   $(addprefix $(BUILD_DIR)/, \
-                    $(notdir \
-                        $(patsubst %.c,%.rel,$(C_SRCS)) \
-                        $(patsubst %.s,%.rel,$(S_SRCS)) \
-                    ) \
-                )
+$(TARGET):
+	@echo "[host] building (inside docker) -> bin/$(TARGET).tap"
+	@$(DOCKER_RUN) sh -c 'make -C src TARGET=$(TARGET) all'
 
-# Tools.
-CC          =   sdcc
-CFLAGS      =   --std-c11 -mz80 --debug --nostdinc \
-                $(addprefix -I,$(INC_DIR))
-AS          =   sdasz80
-ASFLAGS     =   -xlos -g
-LD          =   sdcc
-LDFLAGS     =   -mz80 -Wl -y --code-loc $(ADDR) \
-                --no-std-crt0 --nostdlib --nostdinc \
-                $(addprefix -L,$(LIB_DIR)) \
-                -llibsdcc-z80 -p
-OBJCOPY     =   sdobjcopy
-# Data segment fix (relink due to SDCC bug)
-L2          =   sdldz80
-L2FLAGS     =   -nf
-L2FIX       =   sed '/-b _DATA = $(ADDR)/d'
-# File
-RMDIR       =   rm -f -r 
-MKDIR       =   mkdir -p 
+build: $(TARGET)
 
-# Rules.
-.PHONY: all
-all: $(BUILD_DIR) $(BUILD_DIR)/$(APP).bin
+rebuild:
+	@$(DOCKER_RUN) sh -c 'make -C src TARGET=$(TARGET) clean'
+	@$(MAKE) all
 
-.PHONY: $(BUILD_DIR)
-$(BUILD_DIR):
-	# Remove build dir (we are going to write again).
-	$(RMDIR) $(BUILD_DIR)
-	# And re-create!
-	$(MKDIR) $(BUILD_DIR)
-
-$(BUILD_DIR)/$(APP).bin: $(BUILD_DIR)/$(APP).ihx
-	$(OBJCOPY) -I ihex -O binary $(basename $@).ihx $(basename $@).bin
-
-$(BUILD_DIR)/$(APP).ihx: $(BUILD_DIR)/$(CRT0).rel $(OBJS)
-	$(LD) $(LDFLAGS) -o $(BUILD_DIR)/$(APP).ihx \
-		$(BUILD_DIR)/$(CRT0).rel $(OBJS)
-	$(L2FIX) $(BUILD_DIR)/$(APP).lk > $(BUILD_DIR)/$(APP).link
-	$(L2) $(L2FLAGS) $(BUILD_DIR)/$(APP).link
-
-$(BUILD_DIR)/%.rel: %.c
-	$(CC) -c -o $(BUILD_DIR)/$(@F) $< $(CFLAGS)
-
-$(BUILD_DIR)/%.rel: %.s
-	$(AS) $(ASFLAGS) $(BUILD_DIR)/$(@F) $<
-
-$(BUILD_DIR)/$(CRT0).rel: $(CRT0).s
-	$(AS) $(ASFLAGS) $(BUILD_DIR)/$(@F) $<
-
-.PHONY: clean
 clean:
-	$(RMDIR) $(BUILD_DIR)
+	@echo "[host] removing ./build and ./bin"
+	@rm -rf build
+	@rm -rf bin
+
+# Optional convenience: pull the image explicitly (not required for build)
+docker-pull:
+	@echo "[host] pulling docker image $(DOCKER_IMAGE) ..."
+	@docker pull $(DOCKER_IMAGE)
+
+.PHONY: all $(TARGET) build rebuild clean docker-pull

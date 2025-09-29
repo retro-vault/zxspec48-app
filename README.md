@@ -18,6 +18,14 @@ Pass the `APP` and `ADDR` parameters to change the name of your application and 
 make APP=myapp ADDR=0x9000`
 ~~~
 
+# Automatically run fuse
+
+There is a .vscode inside this repository. And if you press F5 it will run fuse emulator and you program in it. But to allow docker to access X Windows you need to execute 
+
+~~~
+xhost +SI:localuser:$(whoami)
+~~~
+
 [language.url]:   https://en.wikipedia.org/wiki/ANSI_C
 [language.badge]: https://img.shields.io/badge/language-C-blue.svg
 
