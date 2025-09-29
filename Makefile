@@ -1,36 +1,38 @@
-# Targets.
+# ---------- project ----------
 TARGET ?= zxspec48-app
 
-# Docker settings.
-DOCKER_IMAGE ?= sdcc-env:latest
-DOCKERFILE   ?= Dockerfile
+# ---------- docker ----------
+# Prebuilt toolchain image (no local build step needed)
+DOCKER_IMAGE ?= wischner/sdcc-z80-zx-spectrum:latest
+
+# Mount the repo read/write and run make in /work
+# Ensure SDCC is on PATH (image uses /opt/sdcc/bin)
 WORKDIR      := $(PWD)
+DOCKER_RUN   = docker run --rm -v "$(WORKDIR):/work" -w /work \
+               $(DOCKER_IMAGE) env PATH=/opt/sdcc/bin:$$PATH
 
-# Run container mounting the repo; ensure SDCC is on PATH
-DOCKER_RUN = docker run --rm -v "$(WORKDIR):/work" -w /work $(DOCKER_IMAGE) \
-             env PATH=/opt/sdcc/bin:$$PATH
+# ---------- targets ----------
+# Default: build inside docker (artifacts -> ./build & ./bin via src/Makefile)
+all: $(TARGET)
 
-# Default: build lib then run link-only tests
-all: $(TARGET) check
-
-docker-image:
-	@echo "[host] building docker image $(DOCKER_IMAGE) ..."
-	@docker build -f $(DOCKERFILE) -t $(DOCKER_IMAGE) .
-
-# Build library inside Docker using src/Makefile (artifacts -> ./build & ./bin)
-$(TARGET): docker-image
-	@echo "[host] building (inside docker) -> bin/$(TARGET).lib"
+$(TARGET):
+	@echo "[host] building (inside docker) -> bin/$(TARGET).tap"
 	@$(DOCKER_RUN) sh -c 'make -C src TARGET=$(TARGET) all'
 
 build: $(TARGET)
 
 rebuild:
-	@$(DOCKER_RUN) sh -c 'make -C src clean'
+	@$(DOCKER_RUN) sh -c 'make -C src TARGET=$(TARGET) clean'
 	@$(MAKE) all
 
 clean:
-	@echo "[host] removing ./build amd ./bin"
+	@echo "[host] removing ./build and ./bin"
 	@rm -rf build
 	@rm -rf bin
 
-.PHONY: all docker-image $(TARGET) build rebuild clean check
+# Optional convenience: pull the image explicitly (not required for build)
+docker-pull:
+	@echo "[host] pulling docker image $(DOCKER_IMAGE) ..."
+	@docker pull $(DOCKER_IMAGE)
+
+.PHONY: all $(TARGET) build rebuild clean docker-pull
