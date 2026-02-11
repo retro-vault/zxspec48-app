@@ -7,7 +7,7 @@
       "request": "launch",
       "preLaunchTask": "Build ZX Spectrum app",
 
-      "program": "/usr/local/bin/docker",
+      "program": "/usr/bin/docker",
       "args": [
         "run", "--rm",
         "-e", "DISPLAY=${env:DISPLAY}",

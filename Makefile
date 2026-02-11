@@ -8,8 +8,14 @@ DOCKER_IMAGE ?= wischner/sdcc-z80-zx-spectrum:latest
 # Mount the repo read/write and run make in /work
 # Ensure SDCC is on PATH (image uses /opt/sdcc/bin)
 WORKDIR      := $(PWD)
-DOCKER_RUN   = docker run --rm -v "$(WORKDIR):/work" -w /work \
+UID := $(shell id -u)
+GID := $(shell id -g)
+
+DOCKER_RUN   = docker run --rm \
+               --user $(UID):$(GID) \
+               -v "$(WORKDIR):/work" -w /work \
                $(DOCKER_IMAGE) env PATH=/opt/sdcc/bin:$$PATH
+
 
 # ---------- targets ----------
 # Default: build inside docker (artifacts -> ./build & ./bin via src/Makefile)
