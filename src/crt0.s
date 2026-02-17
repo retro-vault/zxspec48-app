@@ -7,6 +7,11 @@
         ;;
         ;; 2021-06-16   tstih
         .module crt0
+        .globl  ___sdcc_heap_init
+        .globl  ___sdcc_heap
+        .globl  ___sdcc_heap_end
+        .globl  _putchar
+        .globl  _getchar
         
         .area   _CODE
 
@@ -26,6 +31,11 @@
         push    bc
         push    de
         push    hl
+
+        ;; open stream channel so stdio output goes to screen
+        ld      iy,#0x5c3a
+        ld      a,#2
+        call    0x1601
 
         call    gsinit                  ; call SDCC init code
 
@@ -51,6 +61,35 @@
         ;; return to wherever you were called from
         ret	
 
+        ;; SDCC library support:
+        ;; provide putchar/getchar hooks used by z80 stdio.
+_putchar::
+        ld      a,l
+        cp      #0x0a
+        jr      nz, putchar_emit
+        ld      a,#0x0d
+putchar_emit:
+        push    iy
+        ld      iy,#0x5c3a
+        rst     0x10
+        pop     iy
+        ld      l,a
+        ld      h,#0x00
+        ret
+
+_getchar::
+        push    iy
+        ld      iy,#0x5c3a
+        call    0x15e6
+        pop     iy
+        cp      #0x0d
+        jr      nz, getchar_done
+        ld      a,#0x0a
+getchar_done:
+        ld      l,a
+        ld      h,#0x00
+        ret
+
         ;;	(linker documentation:) where specific ordering is desired - 
         ;;	the first linker input file should have the area definitions 
         ;;	in the desired order
@@ -63,10 +102,13 @@
         .area   _DATA
         .area   _BSS
         .area   _HEAP
+        .area   _HEAP_END
 
         ;;	this area contains data initialization code.
         .area _GSINIT
 gsinit:	
+        call    ___sdcc_heap_init
+
         ;; initialize vars from initializer
         ld      de, #s__INITIALIZED
         ld      hl, #s__INITIALIZER
@@ -88,4 +130,6 @@ __store_sp:
         .ds	512
 __stack::
         .area _HEAP
-__heap::
+___sdcc_heap::
+        .area _HEAP_END
+___sdcc_heap_end = 0xffff

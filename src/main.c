@@ -1,10 +1,6 @@
-extern void cinit();
-extern void cputc(char ch);
-extern void cputs(char *text);
-extern void cclear();
+#include <stdio.h>
 
-void main() {
-    cinit();
-    cclear();
-    cputs("Hello world,\nagain!");
+int main(void) {
+    printf("Hello world,\nagain!");
+    return 0;
 }
