@@ -1,6 +1,6 @@
 # zxspec48-app
 
-Minimal ZX Spectrum 48K C project using SDCC with a custom `crt0` and SDCC's default z80 libraries.
+Minimal ZX Spectrum 48K C project with Docker-based SDCC builds, using a custom `crt0` and SDCC's default z80 libraries.
 
 ## What this project does
 
@@ -11,6 +11,8 @@ Minimal ZX Spectrum 48K C project using SDCC with a custom `crt0` and SDCC's def
 - Uses SDCC libc (`printf`, `puts`, `malloc`, etc.) with platform hooks implemented in `crt0.s`.
 
 ## Build
+
+`make` runs the build in Docker using image `wischner/sdcc-z80-zx-spectrum:latest`.
 
 ```sh
 make
